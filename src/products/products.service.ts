@@ -1,10 +1,10 @@
 import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { prototype } from 'events';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { prototype } from 'events';
 
 @Injectable()
 export class ProductsService extends PrismaClient implements OnModuleInit {
@@ -59,13 +59,14 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
   async update(id: number, updateProductDto: UpdateProductDto) {
 
+    const { id: __, ...data } = updateProductDto
 
     await this.findOne(id)
 
     return this.product.update({
 
       where: { id },
-      data: updateProductDto
+      data: data
     });
   }
 
